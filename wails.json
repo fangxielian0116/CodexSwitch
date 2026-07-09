@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "CodexSwitch",
+  "outputfilename": "CodexSwitch",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev:wails",
+  "frontend:dev:serverUrl": "http://127.0.0.1:34115",
+  "debounceMS": 150,
+  "info": {
+    "companyName": "Codex",
+    "productName": "CodexSwitch",
+    "productVersion": "1.0.3",
+    "comments": "Built using Wails"
+  },
+  "author": {
+    "name": "Codex"
+  }
+}
