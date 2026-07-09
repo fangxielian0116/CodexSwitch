@@ -5,44 +5,37 @@
 # CodexSwitch
 
 <p align="center">
-  <img src="./build/appicon.png" alt="CodexSwitch Logo" width="120" />
-</p>
-
-<p align="center">
-  <strong>Codex profile manager, Codex account switcher, and OpenAI API configuration desktop app</strong>
+  <strong>Desktop tool for switching Codex official accounts and OpenAI API profiles</strong>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Desktop-Wails%20App-2f855a?style=for-the-badge" alt="Desktop App" />
   <img src="https://img.shields.io/badge/Go-1.26%2B-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go 1.26+" />
   <img src="https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js 22.x" />
-  <img src="https://img.shields.io/badge/Wails-v2.11.0-FF6B6B?style=for-the-badge" alt="Wails v2.11.0" />
   <img src="https://img.shields.io/badge/Vue-3.5-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue 3.5" />
   <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript 5.8" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platforms-Windows%20%7C%20macOS%20%7C%20Linux-1f2937?style=flat-square" alt="Platforms" />
-  <img src="https://img.shields.io/badge/macOS-Intel%20%26%20Apple%20Silicon-111827?style=flat-square" alt="macOS Architectures" />
-  <img src="https://img.shields.io/badge/Release-Automated-7c3aed?style=flat-square" alt="Automated Release" />
-  <img src="https://img.shields.io/badge/Version-1.0.0%2B-2563eb?style=flat-square" alt="Versioning" />
-  <img src="https://img.shields.io/badge/Language-English-3b82f6?style=flat-square" alt="Language English" />
+  <img src="https://img.shields.io/badge/Release-GitHub%20Actions-7c3aed?style=flat-square" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/Version-1.0.3-2563eb?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/Language-中文%20%7C%20English-ef4444?style=flat-square" alt="Language" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/ke4nec/CodexSwitch/releases"><img src="https://img.shields.io/github/v/release/ke4nec/CodexSwitch?style=flat-square" alt="Latest Release" /></a>
-  <a href="https://github.com/ke4nec/CodexSwitch/stargazers"><img src="https://img.shields.io/github/stars/ke4nec/CodexSwitch?style=flat-square" alt="GitHub Stars" /></a>
-  <a href="https://github.com/ke4nec/CodexSwitch/issues"><img src="https://img.shields.io/github/issues/ke4nec/CodexSwitch?style=flat-square" alt="GitHub Issues" /></a>
-  <a href="https://github.com/ke4nec/CodexSwitch/releases"><img src="https://img.shields.io/github/downloads/ke4nec/CodexSwitch/total?style=flat-square" alt="GitHub Downloads" /></a>
+  <a href="https://github.com/fangxielian0116/CodexSwitch/releases"><img src="https://img.shields.io/github/v/release/fangxielian0116/CodexSwitch?style=flat-square" alt="Latest Release" /></a>
+  <a href="https://github.com/fangxielian0116/CodexSwitch/stargazers"><img src="https://img.shields.io/github/stars/fangxielian0116/CodexSwitch?style=flat-square" alt="GitHub Stars" /></a>
+  <a href="https://github.com/fangxielian0116/CodexSwitch/issues"><img src="https://img.shields.io/github/issues/fangxielian0116/CodexSwitch?style=flat-square" alt="GitHub Issues" /></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ke4nec/CodexSwitch/releases">Download</a> ·
+  <a href="https://github.com/fangxielian0116/CodexSwitch/releases">Download release builds</a>
 </p>
 
-CodexSwitch is a cross-platform desktop application for managing multiple Codex configurations.
+CodexSwitch is a cross-platform desktop app for managing multiple Codex official accounts and custom OpenAI API profiles. It connects the Codex home directory you are actively using with a local managed profile library, so you can switch between accounts, API keys, models, and reasoning settings without repeatedly editing `auth.json` and `config.toml`.
 
-It connects your active Codex home directory with a locally managed profile library, so you can switch between official accounts and custom API setups without manually editing `auth.json` or `config.toml`.
+> This repository continues and extends the original [ke4nec/CodexSwitch](https://github.com/ke4nec/CodexSwitch) project. Thanks to the original author for the foundation, product direction, and open-source implementation.
 
 ## Preview
 
@@ -50,146 +43,101 @@ It connects your active Codex home directory with a locally managed profile libr
   <img src="./docs/preview.png" alt="CodexSwitch Preview" width="100%" />
 </p>
 
-If you are searching for any of the following, this project is likely relevant:
-- Codex profile manager
-- Codex account switcher
-- Codex multi-account desktop app
-- OpenAI API profile manager
-- cross-platform Codex desktop app for Windows, macOS, and Linux
+## What's Updated In This Repository
 
----
+This version focuses on more reliable profile switching and clearer account status visibility:
 
-## Why CodexSwitch
+- **Unified management for official and API profiles**
+  Detect the current Codex directory, import official account files, create or edit API profiles, and manage profiles from different sources in one local list.
 
-CodexSwitch is useful when you need to:
+- **Support for standard official auth files and CLI auth files**
+  Official account import supports standard `auth.json` files and CLI-style auth files containing fields such as `access_token`, `refresh_token`, and `account_id`. CLI files are normalized into a Codex-compatible structure.
 
-- switch between multiple official Codex accounts
-- move between official accounts and OpenAI API profiles
-- maintain several `API Key`, model, and reasoning-effort combinations
-- quickly inspect quota, status, and availability
-- avoid repeated manual edits inside `~/.codex`
+- **Improved API profile generation**
+  API profile creation generates complete `auth.json` and `config.toml` files. It supports `Base URL`, model, reasoning effort, context window, and automatically computes `model_auto_compact_token_limit`.
 
-### Who It Is For
+- **Protect current config before switching**
+  Before switching to another profile, the app scans and stores the valid config currently in the Codex directory to reduce the risk of overwriting an active account or API setup.
 
-- individual users switching between multiple official Codex accounts
-- developers managing both official Codex access and OpenAI API keys
-- desktop users looking for a visual Codex configuration switcher
-- teams that want the same workflow across Windows, macOS, and Linux
+- **More stable `config.toml` write-back**
+  Official accounts share an official config template. When switching API profiles, or switching back from API to an official account, managed config is merged with the existing target config where possible.
 
-### Search Keywords
-
-- CodexSwitch
-- Codex profile manager
-- Codex account switcher
-- Codex desktop app
-- OpenAI API profile manager
-- multi-account manager for Codex
-- Wails desktop app
-
----
-
-## Highlights
-
-- **Official account import**
-  Automatically detects the current Codex profile and also supports importing exported official account files from the UI.
-
-- **API profile management**
-  Create, edit, store, and switch between multiple API-based profiles.
-
-- **One-click switching**
-  Apply the selected profile back to the target Codex directory without hand-editing config files.
-
-- **Managed profile library**
-  Keep your commonly used profiles in one local managed repository.
-
-- **Rate limit refresh**
-  Fetch and cache official account usage windows for quick inspection.
+- **Official account limit refresh**
+  Official accounts can refresh usage limits. The app parses 5-hour and weekly windows, stores plan type, reset time, and refresh state, and tries to refresh the official access token before fetching limits.
 
 - **Latency and availability testing**
-  Run responsiveness checks for both official and API profiles.
+  Official and API profiles can be tested individually or in bulk. API profiles test basic connectivity and then validate availability through `/responses` or `/chat/completions` depending on `wire_api`.
 
-- **Cross-platform desktop app**
-  Built with Wails, Go, and Vue for Windows, macOS, and Linux.
+- **API connectivity history**
+  API latency and availability results are persisted in a local SQLite database. Up to 48 entries are kept per profile and displayed as recent connectivity markers in the UI.
 
-- **Bilingual UI**
-  The application supports both Chinese and English UI languages.
+- **Sorting and status visibility**
+  The profile list can be sorted by 5-hour remaining quota, weekly remaining quota, latency, and last sync time. It also shows active, disabled, invalid, and ready states.
 
----
+- **System tray and quick switching**
+  The tray menu shows the current profile and provides open-window, quick-switch, and quit actions. On Windows, the close button can hide the window to the tray when enabled in settings.
 
-## How It Works
+- **Restart Codex after switching**
+  A setting can request a Codex restart after a successful switch. The current implementation supports Windows and macOS.
 
-The core flow is straightforward:
+- **Windows network repair**
+  The Windows network repair action runs with administrator permission, adjusts IPv4 metrics for physical and VPN/virtual adapters, clears the DNS cache, and checks reachability for `api.openai.com` and `chatgpt.com`.
 
-1. Scan the configured Codex home directory
-2. Detect whether the current setup is an official or API profile
-3. Store recognized profiles in a managed local library
-4. Let you import, edit, switch, test, and remove profiles in the UI
-5. Write the selected profile back to the active Codex directory
+- **Local maintenance**
+  Profiles can be enabled, disabled, and deleted when not active. The app can also clean expired archived sessions from the target Codex directory based on a configurable retention period.
 
----
+- **Chinese and English UI**
+  The app includes Chinese and English UI text and remembers the selected language.
 
-## Quick Start
+## Use Cases
 
-### Typical Usage
+- Switch between multiple Codex official accounts
+- Manage official accounts and multiple OpenAI API keys together
+- Keep separate profiles for different models, Base URLs, and reasoning settings
+- Check official account limits, API availability, and latency quickly
+- Avoid manual edits to `~/.codex/auth.json` and `~/.codex/config.toml`
 
-1. Launch the app
-2. Open Settings and confirm the target Codex home directory
-3. Let the app detect the current profile automatically, or import an official account file
-4. Add API profiles when needed
-5. Switch profiles, refresh limits, or run latency tests from the list
+## Typical Workflow
 
-### Typical Codex Home Locations
+1. Launch CodexSwitch.
+2. Open Settings and confirm the target Codex config directory, usually `~/.codex` or `%USERPROFILE%\.codex`.
+3. Let the app detect the current profile automatically, or import an official account file.
+4. Add API profiles as needed by entering Base URL, model, reasoning effort, context window, and API key.
+5. Use the managed profile list to switch, test, refresh limits, disable, or delete profiles.
+6. Optionally enable "Restart Codex after switching" or "Hide to tray on close" in Settings.
 
-- macOS / Linux: `~/.codex`
-- Windows: usually `%USERPROFILE%\.codex`
-- The path can also be changed in the app settings
+## Common Codex Config Directories
 
----
+- Windows: `%USERPROFILE%\.codex`
+- macOS: `~/.codex`
+- Linux: `~/.codex`
 
-## Download & Releases
+The target path can be changed manually in Settings. After saving settings, the app immediately rescans the directory and detects the active profile.
 
-- The project automatically produces release assets for:
-  - Linux `amd64`
-  - Windows `amd64`
-  - macOS `amd64`
-  - macOS `arm64`
-- Official builds are uploaded to the GitHub **Releases** page
-- These are user-facing release assets, not only temporary workflow artifacts
+## Data And Security Notes
 
-### Versioning
+- Managed profiles are stored in the local app config directory and are not uploaded to the cloud by CodexSwitch.
+- API keys and official account tokens are stored locally in the managed profile library. Do not upload the app config directory to a public repository.
+- Deleting a managed profile only removes CodexSwitch's local managed copy. It does not proactively clear the target Codex directory.
+- The currently active profile cannot be deleted directly. Switch to another profile first.
 
-- The project version is stored in [`wails.json`](wails.json) under `info.productVersion`
-- You can start from the default version `1.0.0`
-- Releases no longer auto-increment on every commit
-- If the tag for the current version already exists, the workflow fails instead of overwriting an existing release
+## Download And Releases
 
-### Two Ways To Trigger A Release
+The release workflow is defined in [`.github/workflows/release-cross-platform.yml`](.github/workflows/release-cross-platform.yml) and builds assets for:
 
-- Update `info.productVersion` in [`wails.json`](wails.json) and push to `master`
-- Push a version tag such as `v1.0.1`
+- Linux `amd64`
+- Windows `amd64`
+- macOS `amd64`
+- macOS `arm64`
 
-### Recommended Release Flow
-
-1. Update `info.productVersion` in [`wails.json`](wails.json)
-2. Commit and push to `master`
-3. GitHub Actions builds and publishes that version automatically
-
-If you prefer explicit tag-based releases, you can also do:
+The version is read from `info.productVersion` in [`wails.json`](wails.json). The recommended release path is to push a version tag:
 
 ```bash
-git tag v1.0.1
-git push origin v1.0.1
+git tag v1.0.3
+git push origin v1.0.3
 ```
 
-### Release Workflow
-
-- Workflow file: [`.github/workflows/release-cross-platform.yml`](.github/workflows/release-cross-platform.yml)
-- Trigger:
-  - push to `master` when [`wails.json`](wails.json) changes
-  - push a `v*` version tag
-  - manual dispatch as a fallback
-
----
+The workflow can also be triggered manually. Branch-based release triggering currently listens for [`wails.json`](wails.json) changes on `master`; if your default branch is `main`, use a tag or manual dispatch, or update the workflow branch configuration.
 
 ## Build From Source
 
@@ -205,7 +153,7 @@ Install the Wails CLI:
 go install github.com/wailsapp/wails/v2/cmd/wails@latest
 ```
 
-### Bootstrap
+### Bootstrap Dependencies
 
 ```cmd
 bootstrap.bat
@@ -229,7 +177,7 @@ build.bat
 release.bat
 ```
 
-### Clean
+### Clean Build Output
 
 ```cmd
 clean.bat
@@ -240,8 +188,6 @@ Remove all generated files including `node_modules`:
 ```cmd
 clean.bat -All
 ```
-
----
 
 ## Manual Commands
 
@@ -257,47 +203,31 @@ go build ./...
 wails build
 ```
 
----
-
 ## Tech Stack
 
 - **Backend**: Go
 - **Desktop Shell**: Wails v2
 - **Frontend**: Vue 3 + TypeScript + Vuetify + Pinia
-- **Build & Release**: GitHub Actions
-
----
+- **Local Storage**: JSON files + SQLite
+- **Build And Release**: GitHub Actions
 
 ## Project Structure
 
-- [`internal/codexswitch`](internal/codexswitch): backend services, storage, parsing, tests
-- [`frontend`](frontend): Vue desktop UI
-- [`conf`](conf): sample configuration data
-- [`build`](build): packaging resources and build output
+- [`app.go`](app.go): Wails bindings that connect frontend actions with backend services
+- [`internal/codexswitch`](internal/codexswitch): core logic for scanning, import, switching, limit refresh, latency testing, and settings storage
+- [`frontend`](frontend): Vue desktop UI, state management, and bilingual messages
+- [`docs/preview.png`](docs/preview.png): README preview image
+- [`.github/workflows/release-cross-platform.yml`](.github/workflows/release-cross-platform.yml): cross-platform release workflow
 
----
+## Current Limitations
 
-## Notes
-
-- Official and API profiles are intentionally handled through different internal flows.
-- The app tries to keep a single stable Codex directory and switch its content, instead of making you manage multiple folders manually.
-- macOS releases are generated for both Intel and Apple Silicon.
-- Linux release builds use the Wails `webkit2_41` build tag for Ubuntu 24.04 compatibility.
-
----
-
-## Current Focus
-
-This project is currently focused on practical profile management and desktop usability:
-
-- unified management of official and API profiles
-- automatic detection and write-back of the active Codex home
-- official quota refresh
-- latency and availability checks
-- automated cross-platform releases
-
----
+- Network repair currently supports Windows only.
+- Restarting Codex after switching currently supports Windows and macOS. Linux returns an unsupported message.
+- Official limit refresh and latency testing depend on ChatGPT/Codex-related endpoints being reachable. Endpoint changes may affect results.
+- API availability testing sends one lightweight request with the prompt `hi`.
 
 ## Acknowledgements
 
-CodexSwitch is built on top of the Wails ecosystem and the broader Go + Vue open-source stack.
+Thanks to the original author of [ke4nec/CodexSwitch](https://github.com/ke4nec/CodexSwitch) for the project foundation and open-source implementation. This repository continues that work by improving account import, API profiles, limit refresh, latency testing, tray experience, network repair, and automated releases.
+
+Thanks also to Wails, Go, Vue, Vuetify, Pinia, SQLite, and the broader open-source ecosystem.
