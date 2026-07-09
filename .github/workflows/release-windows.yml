@@ -87,10 +87,11 @@ jobs:
         shell: pwsh
         env:
           APP_VERSION: ${{ steps.version.outputs.version }}
+          GOCACHE: ${{ runner.temp }}\go-build
           npm_config_registry: https://registry.npmjs.org/
           npm_config_audit: "false"
           npm_config_fund: "false"
-        run: wails build -clean -platform windows/amd64 -ldflags "-X main.appVersion=$env:APP_VERSION"
+        run: wails build -clean -s -platform windows/amd64 -ldflags "-X main.appVersion=$env:APP_VERSION"
 
       - name: Package Windows asset
         shell: pwsh
