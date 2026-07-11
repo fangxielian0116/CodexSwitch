@@ -8,15 +8,14 @@ import (
 	"strings"
 )
 
-func restartCodexProcess() error {
-	const script = `
+const restartCodexWindowsScript = `
 $ErrorActionPreference = 'Stop'
 
 function Get-CodexProcess {
   Get-CimInstance Win32_Process |
     Where-Object {
-      $_.Name -eq 'Codex.exe' -and
-      $_.ExecutablePath -match '\\app\\Codex\.exe$' -and
+      $_.Name -in @('Codex.exe', 'ChatGPT.exe') -and
+      $_.ExecutablePath -match '\\app\\(?:Codex|ChatGPT)\.exe$' -and
       $_.CommandLine -notmatch '\s--type='
     } |
     Sort-Object ProcessId |
@@ -29,7 +28,7 @@ function Get-CodexAppUserModelId([string]$exePath) {
   }
 
   $normalized = $exePath -replace '/', '\'
-  if ($normalized -notmatch '\\WindowsApps\\([^\\]+)\\app\\Codex\.exe$') {
+  if ($normalized -notmatch '\\WindowsApps\\([^\\]+)\\app\\(?:Codex|ChatGPT)\.exe$') {
     return $null
   }
 
@@ -218,7 +217,8 @@ if ($null -ne $oldPid -and $newProcess.ProcessId -eq $oldPid) {
 }
 `
 
-	cmd := exec.Command("powershell", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", script)
+func restartCodexProcess() error {
+	cmd := exec.Command("powershell", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", restartCodexWindowsScript)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		message := strings.TrimSpace(string(output))
