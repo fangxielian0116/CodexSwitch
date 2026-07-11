@@ -4,11 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
     tags:
       - v*
     paths:
       - wails.json
+      - RELEASE_NOTES.md
+      - .github/workflows/release-cross-platform.yml
 
 permissions:
   contents: write
@@ -195,6 +197,9 @@ jobs:
       RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
       RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download packaged assets
         uses: actions/download-artifact@v4
         with:
@@ -226,5 +231,5 @@ jobs:
             gh release create "$RELEASE_TAG" release-upload/* \
               --target "$GITHUB_SHA" \
               --title "$RELEASE_TAG" \
-              --generate-notes
+              --notes-file RELEASE_NOTES.md
           fi
