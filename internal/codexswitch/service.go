@@ -465,6 +465,13 @@ func (s *Service) syncAndBuildState(autoSyncCurrent bool) (AppState, error) {
 	if err != nil {
 		return AppState{}, err
 	}
+	if currentSnapshot != nil && currentSnapshot.Meta.IsValid && currentSnapshot.Meta.Type == ProfileTypeOfficial {
+		for i := range profiles {
+			if profiles[i].Type == ProfileTypeOfficial {
+				profiles[i].Model = currentSnapshot.Meta.Model
+			}
+		}
+	}
 
 	activeID := ""
 	if currentSnapshot != nil && currentSnapshot.Meta.IsValid {

@@ -88,6 +88,63 @@ sandbox = "workspace-write"
 	}
 }
 
+func TestGetAppStateUsesCurrentOfficialModelForProfiles(t *testing.T) {
+	service := newTestService(t)
+	codexHome := t.TempDir()
+	if err := service.saveSettings(AppSettings{CodexHomePath: codexHome}); err != nil {
+		t.Fatalf("saveSettings failed: %v", err)
+	}
+
+	staleSharedConfigRaw := `model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+`
+	if err := safeWriteText(service.sharedOfficialConfigPath(), staleSharedConfigRaw); err != nil {
+		t.Fatalf("write stale shared official config failed: %v", err)
+	}
+	storedIDToken, storedAccessToken := buildTestOfficialTokens(t, "account-stored", "user-stored", "stored@example.com", "plus", "stored")
+	storedSnapshot, err := buildProfileSnapshot(
+		buildTestOfficialAuthRaw(t, storedIDToken, storedAccessToken, "refresh-stored", "account-stored"),
+		staleSharedConfigRaw,
+		profileSourceImportedFileStandard,
+		service.now(),
+	)
+	if err != nil {
+		t.Fatalf("build stored official profile failed: %v", err)
+	}
+	if err := service.saveProfileSnapshot(storedSnapshot); err != nil {
+		t.Fatalf("save stored official profile failed: %v", err)
+	}
+
+	currentConfigRaw := `model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+`
+	idToken, accessToken := buildTestOfficialTokens(t, "account-current", "user-current", "current@example.com", "plus", "current")
+	currentAuthRaw := buildTestOfficialAuthRaw(t, idToken, accessToken, "refresh-current", "account-current")
+	writeTestFile(t, filepath.Join(codexHome, "auth.json"), currentAuthRaw)
+	writeTestFile(t, filepath.Join(codexHome, "config.toml"), currentConfigRaw)
+
+	state, err := service.GetAppState()
+	if err != nil {
+		t.Fatalf("GetAppState returned error: %v", err)
+	}
+	if len(state.Profiles) != 2 {
+		t.Fatalf("expected 2 official profiles, got %d", len(state.Profiles))
+	}
+	for _, profile := range state.Profiles {
+		if profile.Model != "gpt-5.6-sol" {
+			t.Fatalf("expected model from current config for %s, got %s", profile.DisplayName, profile.Model)
+		}
+	}
+
+	sharedConfigRaw, err := readTextFile(service.sharedOfficialConfigPath())
+	if err != nil {
+		t.Fatalf("read shared official config failed: %v", err)
+	}
+	if strings.TrimSpace(sharedConfigRaw) != strings.TrimSpace(staleSharedConfigRaw) {
+		t.Fatalf("expected model display sync not to overwrite shared config, got %s", sharedConfigRaw)
+	}
+}
+
 func TestSwitchProfileBackToOfficialRemovesAPIManagedConfig(t *testing.T) {
 	service := newTestService(t)
 	codexHome := t.TempDir()
