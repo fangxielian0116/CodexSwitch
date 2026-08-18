@@ -50,7 +50,7 @@ func NewService(options ServiceOptions) (*Service, error) {
 
 	httpClient := options.HTTPClient
 	if httpClient == nil {
-		httpClient = &http.Client{Timeout: 10 * time.Second}
+		httpClient = newDefaultHTTPClient(logger)
 	}
 
 	now := options.Now

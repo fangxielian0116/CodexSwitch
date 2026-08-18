@@ -68,6 +68,9 @@ This version focuses on more reliable profile switching and clearer account stat
 - **Latency and availability testing**
   Official and API profiles can be tested individually or in bulk. API profiles test basic connectivity and then validate availability through `/responses` or `/chat/completions` depending on `wire_api`.
 
+- **System proxy support**
+  On Windows, the app automatically reads the current user's static system proxy and bypass list and uses them for rate-limit refreshes, official token refreshes, and availability tests. Standard proxy environment variables remain supported when no system proxy is configured.
+
 - **API connectivity history**
   API latency and availability results are persisted in a local SQLite database. Up to 48 entries are kept per profile and displayed as recent connectivity markers in the UI.
 
